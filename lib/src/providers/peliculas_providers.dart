@@ -6,7 +6,8 @@ import '../models/pelicula_model.dart';
 
 class PeliculaProvider {
   //Url del webservice a utilizar
-  String _url = 'pelicula.devetechnologies.com';
+  //String _url = 'pelicula.devetechnologies.com';
+  String _url = 'https://tundra-future-psychiatrist.glitch.me/peliculas.json';
   bool _cargando = false;
   List<Pelicula> _populares = [];
 
@@ -26,7 +27,8 @@ class PeliculaProvider {
   //Metodo que retorna la lista de peliculas tras llamar a _procesarPelicula
   Future<List<Pelicula>> getCines() async {
     //Se crea la url completa para esta llamada especifica
-    final url = Uri.https(_url, '/public/peliculas');
+    //final url = Uri.https(_url, '/public/peliculas');
+    final url = Uri.https(_url, '/peliculas.json');
 
     //Se retorna la lista de peliculas que se genera con todo lo contenido en 'results'
     return _procesarPelicula(url, 'results');

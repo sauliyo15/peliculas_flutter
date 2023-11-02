@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas/src/providers/peliculas_providers.dart';
+import 'package:peliculas/src/widgets/card_swiper_widget.dart';
+
+//Encargado de llamar al webservice y rellenar la lista de peliculas
+PeliculaProvider _peliculas = PeliculaProvider();
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,12 +15,35 @@ class HomePage extends StatelessWidget {
       title: 'Home Page',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Home'),
+          title: const Text('Home Películas'),
         ),
-        body: const Center(
-          child: Text('Hello Home Pages'),
+        body: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _swipeTarjetas(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget _swipeTarjetas() {
+    return FutureBuilder(
+        future: _peliculas.getCines(),
+        builder: (BuildContext context, AsyncSnapshot snapshop) {
+          if (snapshop.hasData) {
+            return CardSwiper(
+              peliculas: snapshop.data,
+            );
+          } else {
+            return Container(
+                height: 400.0,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ));
+          }
+        });
   }
 }
