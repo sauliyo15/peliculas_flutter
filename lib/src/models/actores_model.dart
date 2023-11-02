@@ -1,27 +1,16 @@
-//Clase Actores, que sirve para crear la lista de actores
-class Actores {
-  List<Actor> items = [];
+class Cast {
+  List<Actor> actores = [];
 
-  //Constructor
-  Actores();
-
-  //Metodo que permite operar con los datos que provienen de un archivo json
-  Actores.fromjsonList(List<dynamic> jsonList) {
-    //Si el json esta vacio, no hay nada que hacer
+  Cast.fromJsonList(List<dynamic> jsonList) {
     if (jsonList.isEmpty) return;
 
-    //Recorremos los elementos del archivo json llamando al metodo de la clase actor
     for (var item in jsonList) {
-      //Tendremos un elemento del json con sus claves-valores con el que llamar al metodo y construir el objeto actor
       final actor = Actor.fromJsonMap(item);
-
-      //Tras ello se añade el actor a la lista de actores
-      items.add(actor);
+      actores.add(actor);
     }
   }
 }
 
-//Clase Actor con todos los atributos que contendra un actor
 class Actor {
   late int id;
   late String nombre;
@@ -42,7 +31,6 @@ class Actor {
   late int votosAveraje;
   late int cantidadVotos;
 
-  //Constructor de la clase
   Actor({
     required this.id,
     required this.nombre,
@@ -64,7 +52,6 @@ class Actor {
     required this.cantidadVotos,
   });
 
-  //Objeto que mapea un elemento de json y a traves de sus claves asigna el valor contenido a los atributos del objeto actor
   Actor.fromJsonMap(Map<String, dynamic> json) {
     id = json['id'];
     nombre = json['nombre'];
@@ -85,7 +72,6 @@ class Actor {
     cantidadVotos = json['cantidad_votos'];
   }
 
-  //Validacion del contenido de la variable que corresponde a la fotografia del actor
   getFoto() {
     if (actorImg.isEmpty) {
       return 'https://www.brightlands.com/sites/default/files/2019-12/No%20avater.jpg';

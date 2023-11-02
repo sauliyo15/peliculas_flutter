@@ -1,47 +1,69 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-
-import '../models/pelicula_model.dart';
+import 'package:peliculas/src/models/actores_model.dart';
+import 'package:peliculas/src/models/pelicula_model.dart';
 
 class PeliculaProvider {
-  //Url del webservice a utilizar
-  //String _url = 'pelicula.devetechnologies.com';
-  String _url = 'https://tundra-future-psychiatrist.glitch.me/peliculas.json';
+  String _url = 'pelicula.devetechnologies.com';
   bool _cargando = false;
   List<Pelicula> _populares = [];
 
-  //Metodo asincrono que hace la llamada al webservice y crea la lista de peliculas
-  Future<List<Pelicula>> _procesarPelicula(Uri url, String cabecerajson) async {
-    //Llamada al webservice con la url
-    final respuesta = await http.get(url);
+  final _popularesStreamController =
+      StreamController<List<Pelicula>>.broadcast();
 
-    //Se obtiene el cuerpo del json
-    final decodeData = json.decode(respuesta.body);
+  void disposeStreams() {
+    _popularesStreamController.close();
+  }
 
-    //A traves del metodo de la clase peliculas se crean todos los elementos que esten contenidos en la cabecera (results) del json
-    final peliculas = Peliculas.fromjsonList(decodeData[cabecerajson]);
+  Function(List<Pelicula>) get popularesSink =>
+      _popularesStreamController.sink.add;
+
+  Stream<List<Pelicula>> get popularesStream =>
+      _popularesStreamController.stream;
+
+  //#2
+  Future<List<Pelicula>> _procesarPelicula(Uri url, String cabeceraJson) async {
+    final resp = await http.get(url);
+    final decodedData = json.decode(resp.body);
+
+    final peliculas = Peliculas.fromJsonList(decodedData[cabeceraJson]);
     return peliculas.items;
   }
 
-  //Metodo que retorna la lista de peliculas tras llamar a _procesarPelicula
+  //#3
   Future<List<Pelicula>> getCines() async {
-    //Se crea la url completa para esta llamada especifica
-    //final url = Uri.https(_url, '/public/peliculas');
-    final url = Uri.https(_url, '/peliculas.json');
-
-    //Se retorna la lista de peliculas que se genera con todo lo contenido en 'results'
+    final url = Uri.https(_url, '/public/peliculas');
+    // final url = Uri.http(_url, '/pelicula_admin/public/peliculas');//uso Local
+    //  print(url);
     return _procesarPelicula(url, 'results');
   }
 
+  //#4
   Future<List<Pelicula>> getPopulares() async {
-    final url = Uri.https(_url, '');
-    return _procesarPelicula(url, '');
+    if (_cargando) {
+      return [];
+    } else {
+      _cargando = true;
+    }
+    final url = Uri.https(_url, '/public/populares_peliculas');
+    // final url = Uri.http(_url, '/pelicula_admin/public/populares_peliculas');// uso local
+    //print(url);
+    final resp = await _procesarPelicula(url, 'results');
+    _populares.addAll(resp);
+    popularesSink(_populares);
+    _cargando = false;
+    return resp;
   }
 
-  Future<List<Pelicula>> getActor() async {
-    final url = Uri.https(_url, '');
-    return _procesarPelicula(url, '');
+  Future<List<Actor>> getActores(String peliculaId) async {
+    final url =
+        Uri.https(_url, '/public/actor_pelicula', {'id_pelicula': peliculaId});
+    final resp = await http.get(url);
+    final decodeData = json.decode(resp.body);
+    final cast = Cast.fromJsonList(decodeData['results']);
+    return cast.actores;
   }
 
   Future<List<Pelicula>> buscarPeliculas() async {

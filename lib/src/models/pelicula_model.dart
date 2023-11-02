@@ -1,27 +1,19 @@
-//Clase Peliculas, que sirve para crear la lista de peliculas
 class Peliculas {
   List<Pelicula> items = [];
 
-  //Constructor
   Peliculas();
 
-  //Metodo que permite operar con los datos que provienen de un archivo json
-  Peliculas.fromjsonList(List<dynamic> jsonList) {
-    //Si el json esta vacio, no hay nada que hacer
+  Peliculas.fromJsonList(List<dynamic> jsonList) {
     if (jsonList.isEmpty) return;
 
-    //Recorremos los elementos del archivo json llamando al metodo de la clase pelicula
     for (var item in jsonList) {
-      //Tendremos un elemento del json con sus claves-valores con el que llamar al metodo y construir el objeto pelicula
       final pelicula = Pelicula.fromjsonMap(item);
 
-      //Tras ello se añade la pelicula a la lista de peliculas
       items.add(pelicula);
     }
   }
 }
 
-//Clase Pelicula con todos los atributos que contendra una pelicula
 class Pelicula {
   late String uniqueId;
   late int id;
@@ -38,7 +30,6 @@ class Pelicula {
   late dynamic createdAt;
   late dynamic updatedAt;
 
-  //Constructor de la clase
   Pelicula(
       {required this.id,
       required this.lenguajeOriginal,
@@ -54,7 +45,6 @@ class Pelicula {
       required this.createdAt,
       required this.updatedAt});
 
-  //Objeto que mapea un elemento de json y a traves de sus claves asigna el valor contenido a los atributos del objeto pelicula
   Pelicula.fromjsonMap(Map<String, dynamic> json) {
     id = json['id'];
     lenguajeOriginal = json['lenguaje_original'];
@@ -71,7 +61,6 @@ class Pelicula {
     updatedAt = json['updated_at'];
   }
 
-  //Validacion del contenido de la variable que corresponde a la imagen de la pelicula
   getPosterImage() {
     if (posterImg.isEmpty) {
       return 'https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg';
@@ -80,7 +69,6 @@ class Pelicula {
     }
   }
 
-  //Validacion del contenido de la variable que corresponde a la imagen de la pelicula
   getBackgroundImage() {
     if (posterImg.isEmpty) {
       return 'https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg';
