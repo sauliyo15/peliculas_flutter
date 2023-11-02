@@ -23,6 +23,7 @@ class Peliculas {
 
 //Clase Pelicula con todos los atributos que contendra una pelicula
 class Pelicula {
+  late String uniqueId;
   late int id;
   late String lenguajeOriginal;
   late String tituloOriginal;
