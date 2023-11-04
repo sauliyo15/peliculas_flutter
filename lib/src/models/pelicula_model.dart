@@ -65,7 +65,8 @@ class Pelicula {
     if (posterImg.isEmpty) {
       return 'https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg';
     } else {
-      return 'https://pelicula.devetechnologies.com/public/$posterImg'; //'http://localhost/pelicula_admin/public/$posterImg';
+      return posterImg
+          .toString(); //'http://localhost/pelicula_admin/public/$posterImg';
     }
   }
 
@@ -73,7 +74,8 @@ class Pelicula {
     if (posterImg.isEmpty) {
       return 'https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg';
     } else {
-      return 'https://pelicula.devetechnologies.com/public/$posterImg'; //'http://localhost/pelicula_admin/public/$posterImg'; uso local
+      return posterImg
+          .toString(); //'http://localhost/pelicula_admin/public/$posterImg'; uso local
     }
   }
 }

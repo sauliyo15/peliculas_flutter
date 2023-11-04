@@ -8,7 +8,6 @@ class HomePage extends StatelessWidget {
   final List<Pelicula> pelicula = [];
   @override
   Widget build(BuildContext context) {
-    _peliculas.getPopulares();
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Movies'),
