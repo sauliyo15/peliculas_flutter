@@ -11,9 +11,28 @@ class PeliculaProvider {
   //Url del webservice-servidor a utilizar
   String _url = 'sauliyo15fisioterapia.glitch.me';
 
-  //De momento estos atributos no se utilizan-----------------------------------
-  //bool _cargando = false;
-  //List<Pelicula> _populares = [];
+  //Variable booleana para controlar la carga de datos (peliculas populres)
+  bool _cargando = false;
+
+  //Variable que almacenara la lista de peliculas populares
+  List<Pelicula> _populares = [];
+
+  //Declaracion del Controlador de tramision
+  final _popularesStreamController =
+      StreamController<List<Pelicula>>.broadcast();
+
+  //Metodo que cierra el controlador de trasmision
+  void disposeStreams() {
+    _popularesStreamController.close();
+  }
+
+  //Metodo que permite agregar listas de películas populares al controlador de transmisión.
+  Function(List<Pelicula>) get popularesSink =>
+      _popularesStreamController.sink.add;
+
+  //Metodo que obtiene un flujo de datos del canal de transmision
+  Stream<List<Pelicula>> get popularesStream =>
+      _popularesStreamController.stream;
 
   //Metodo asincrono que hace la llamada al webservice y crea la lista de peliculas
   Future<List<Pelicula>> _procesarPelicula(Uri url, String cabeceraJson) async {
@@ -37,5 +56,29 @@ class PeliculaProvider {
 
     //Se retorna la lista de peliculas que se genera con todo lo contenido en 'results'
     return _procesarPelicula(url, 'results');
+  }
+
+  //Metodo que retorna la lista de peliculas populares tras llamar a _procesarPelicula
+  Future<List<Pelicula>> getPopulares() async {
+    if (_cargando) {
+      return [];
+    } else {
+      _cargando = true;
+    }
+
+    //Se crea la url completa para esta llamada especifica
+    final url = Uri.https(_url, '/peliculas.json');
+
+    //Se retorna la lista de peliculas que se genera con todo lo contenido en 'results'
+    final respuesta = await _procesarPelicula(url, 'results');
+
+    //se están añadiendo las películas recibidas en la respuesta al final de la lista _populares.
+    _populares.addAll(respuesta);
+
+    //Llamada al metodo para agregar la lista de peliculas populares al controlador de transmision
+    popularesSink(_populares);
+
+    _cargando = false;
+    return respuesta;
   }
 }
