@@ -28,6 +28,7 @@ class CardSwiper extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20.0),
                     child: GestureDetector(
                       onTap: () {
+                        //Cuando se pulsa en una pelicula, iniciamos la navegacion (archivo de rutas) con el objeto pelicula
                         Navigator.pushNamed(context, 'detalle',
                             arguments: peliculas[index]);
                       },
