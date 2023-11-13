@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart'
     as http; //Para utilizar este modulo hay que añadirlo en las dependencias de pubspec.yaml
+import 'package:peliculas/src/models/actores_model.dart';
 import 'package:peliculas/src/models/pelicula_model.dart';
 
 //Clase que se encarga de llamar al webservice y solicitar los datos necesarios en cada caso
@@ -80,5 +81,23 @@ class PeliculaProvider {
 
     _cargando = false;
     return respuesta;
+  }
+
+  //Metodo que retorna la lista de actores tras llamar al webservice y transformar el json
+  Future<List<Actor>> getActores(String peliculaId) async {
+    //Se crea la url completa para esta llamada especifica
+    final url = Uri.https(_url, '/actores.json');
+
+    //Llamada al webservice con la url
+    final resp = await http.get(url);
+
+    //Se obtiene el cuerpo del json
+    final decodedData = json.decode(resp.body);
+
+    //A traves del metodo de la clase Actores se crean todos los elementos que esten contenidos en la cabecera (results) del json
+    final actores = Actores.fromJsonList(decodedData['results']);
+
+    //Se retorna la lista de actores
+    return actores.items;
   }
 }
