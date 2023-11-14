@@ -1,7 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:peliculas/src/models/actores_model.dart';
 import 'package:peliculas/src/models/pelicula_model.dart';
+import 'package:peliculas/src/providers/peliculas_providers.dart';
 
 //Clase que representa la pantalla que muestra los datos de una pelicula seleccionada
 class PeliculaDetalle extends StatelessWidget {
@@ -23,7 +25,8 @@ class PeliculaDetalle extends StatelessWidget {
               delegate: SliverChildListDelegate([
             const SizedBox(height: 10.0),
             _posterTitulo(context, pelicula),
-            _descripcion(pelicula)
+            _descripcion(pelicula),
+            _crearCasting(pelicula)
           ])),
         ],
       ),
@@ -109,6 +112,44 @@ class PeliculaDetalle extends StatelessWidget {
       child: Text(
         pelicula.overview,
         textAlign: TextAlign.justify,
+      ),
+    );
+  }
+
+  //
+  Widget _crearCasting(Pelicula pelicula) {
+    final peliculaProvider = PeliculaProvider();
+    return FutureBuilder(
+        future: peliculaProvider.getActores(pelicula.id.toString()),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return SizedBox();
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        });
+  }
+
+  //
+  Widget _actorTarjeta(Actor actor) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: FadeInImage(
+              placeholder: AssetImage('assets/img/no-image.jpg'),
+              image: NetworkImage(actor.getFoto()),
+              height: 150.0,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Text(
+            actor.nombre,
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
       ),
     );
   }
