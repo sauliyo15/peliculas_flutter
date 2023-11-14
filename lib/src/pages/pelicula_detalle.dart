@@ -1,4 +1,6 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, avoid_unnecessary_containers
+
+//import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:peliculas/src/models/actores_model.dart';
@@ -125,35 +127,46 @@ class PeliculaDetalle extends StatelessWidget {
           if (snapshot.hasData) {
             return _createActoresPageView(snapshot.data);
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         });
   }
 
   //
   Widget _createActoresPageView(List<Actor> actores) {
-    return SizedBox();
+    return SizedBox(
+      height: 200.0,
+      child: PageView.builder(
+          pageSnapping: false,
+          controller: PageController(viewportFraction: 0.3, initialPage: 1),
+          itemCount: actores.length,
+          itemBuilder: (context, i) {
+            return _actorTarjeta(actores[i]);
+          }),
+    );
   }
 
   //
   Widget _actorTarjeta(Actor actor) {
     return Container(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: FadeInImage(
-              placeholder: AssetImage('assets/img/no-image.jpg'),
+              placeholder: const AssetImage('assets/img/no-image.jpg'),
               image: NetworkImage(actor.getFoto()),
               height: 150.0,
               fit: BoxFit.cover,
             ),
           ),
+          const SizedBox(height: 8.0),
           Text(
             actor.nombre,
             overflow: TextOverflow.ellipsis,
-          )
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
