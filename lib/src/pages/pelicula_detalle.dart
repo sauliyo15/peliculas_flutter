@@ -123,11 +123,16 @@ class PeliculaDetalle extends StatelessWidget {
         future: peliculaProvider.getActores(pelicula.id.toString()),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            return SizedBox();
+            return _createActoresPageView(snapshot.data);
           } else {
             return Center(child: CircularProgressIndicator());
           }
         });
+  }
+
+  //
+  Widget _createActoresPageView(List<Actor> actores) {
+    return SizedBox();
   }
 
   //
