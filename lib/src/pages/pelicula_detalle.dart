@@ -141,7 +141,10 @@ class PeliculaDetalle extends StatelessWidget {
           controller: PageController(viewportFraction: 0.3, initialPage: 1),
           itemCount: actores.length,
           itemBuilder: (context, i) {
-            return _actorTarjeta(actores[i]);
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: _actorTarjeta(actores[i]),
+            );
           }),
     );
   }
