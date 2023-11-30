@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_final_fields, avoid_unnecessary_containers, sized_box_for_whitespace, must_be_immutable, deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:peliculas/src/models/pelicula_model.dart';
 import 'package:peliculas/src/providers/peliculas_providers.dart';
 import 'package:peliculas/src/widgets/card_swiper_widget.dart';
 import 'package:peliculas/src/widgets/movie_horizontal_widget.dart';
@@ -14,9 +13,6 @@ class HomePage extends StatelessWidget {
   //Constructor
   HomePage({super.key});
 
-  //Este atributo por el momento no se usa--------------------------------------
-  //final List<Pelicula> pelicula = [];
-
   //Metodo que construye la pantalla de la aplicacion con sus elementos-widgets
   @override
   Widget build(BuildContext context) {
@@ -26,13 +22,29 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Peliculas Disney'),
+        centerTitle: true,
       ),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[_swipeTarjetas(), _footer(context)],
+          children: <Widget>[
+            _swipeTarjetas(),
+            _footer(context),
+          ],
         ),
       ),
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        child: Container(
+          height: 50.0,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {Navigator.pushNamed(context, 'registro')},
+        tooltip: 'Registrate aquí',
+        child: const Icon(Icons.app_registration),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
