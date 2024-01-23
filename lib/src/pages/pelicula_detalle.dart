@@ -32,6 +32,9 @@ class PeliculaDetalle extends StatelessWidget {
           ])),
         ],
       ),
+      bottomNavigationBar: buildBottomAppBar(context),
+      floatingActionButton: buildFloatingActionButton(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -172,6 +175,25 @@ class PeliculaDetalle extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildBottomAppBar(BuildContext context) {
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      child: Container(
+        height: 50.0,
+      ),
+    );
+  }
+
+  Widget buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.pushNamed(context, 'product_admin'); //registro
+      },
+      tooltip: 'Nueva pantalla',
+      child: const Icon(Icons.add_a_photo),
     );
   }
 }

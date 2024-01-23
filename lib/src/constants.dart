@@ -30,17 +30,18 @@ final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
 // Errores de validación de formularios
+const String kNombreNullError = "Introduzca su nombre";
+const String kApellidoNullError = "Introduzca su apellido";
+const String kFechaNacimientoNullError = "Introduzca su fecha de nacimiento";
+const String kLugarNacimientoNullError = "Introduzca su lugar de nacimiento";
 const String kEmailNullError = "Introduzca su email";
-const String kInvalidEmailError = "Introduzca un email valido";
+const String kEmailInvalidoError = "Introduzca un email valido";
+const String kTelefonoNullError = "Introduzca su teléfono";
+const String kDestinonNullError = "Introduzca el destino del viaje";
+const String kDiasViajeNullError = "Introduzca los días del viaje";
+
 const String kPassNullError = "Introduzca su contraseña";
 const String kShortPassError =
     "La contraseña debe de ser mayor o igual a 8 caracteres";
 const String kMatchPassError = "Password no pudo ser macheado";
-const String kNameNullError = "Introduzca su nombre";
-const String klastnameNullError = "Introduzca sus apellidos";
-const String kPhoneNumberNullError = "Introduzca su teléfono";
 const String kAddressNullError = "Introduzca su dirección";
-const String kDateBirthNullError = "Introduzca su fecha de nacimiento";
-const String kBirthPlacethNullError = "Introduzca lugar de nacimiento";
-const String kTravelDestinationhNullError = "Introduzca el destino";
-const String kDaysTriphNullError = "Introduzca cantidad de dias";
